@@ -1,0 +1,268 @@
+<meta name="google-site-verification" content="7kxzDfgMIxXwo_ANJpQANiCAV5Q3mRy7DdMR3QEk1jk" />
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Sirylang — Learn any language, one word at a time</title>
+<meta name="description" content="A clean, friendly language learning web app.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F97316' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 8 6 6'/%3E%3Cpath d='m4 14 6-6 2-3'/%3E%3Cpath d='M2 5h12'/%3E%3Cpath d='M7 2h1'/%3E%3Cpath d='m22 22-5-10-5 10'/%3E%3Cpath d='M14 18h6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root{ --acc:#F97316; --ink:#0f172a; }
+  html{ scroll-behavior:smooth; }
+  body{ font-family:"Vazirmatn","Plus Jakarta Sans",sans-serif; color:var(--ink); background:#f6f7fb; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--acc); color:#fff; }
+  .no-bar{ scrollbar-width:none; } .no-bar::-webkit-scrollbar{ display:none; }
+  button{ cursor:pointer; }
+  :focus-visible{ outline:2px solid var(--acc); outline-offset:2px; border-radius:12px; }
+
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
+  @keyframes floaty{ 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(24px,-30px) scale(1.08)} }
+  .anim-up{ animation:fadeUp .55s cubic-bezier(.2,.7,.2,1) both; }
+  .blob{ position:absolute; border-radius:9999px; filter:blur(70px); opacity:.5; animation:floaty 14s ease-in-out infinite; }
+  .card-h{ transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .card-h:hover{ transform:translateY(-4px); box-shadow:0 18px 40px -18px rgb(15 23 42/.22); border-color:color-mix(in srgb,var(--acc) 45%,white); }
+  
+  .flash{ perspective:1400px; }
+  .flash-inner{ transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.7,.2,1); position:relative; }
+  .flash.flipped .flash-inner{ transform:rotateY(180deg); }
+  .face{ backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+  .face-back{ transform:rotateY(180deg); position:absolute; inset:0; }
+</style>
+</head>
+<body>
+
+<div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+  <div class="blob w-[420px] h-[420px] -top-32 -start-24" style="background:color-mix(in srgb,var(--acc) 35%, transparent)"></div>
+  <div class="blob w-[380px] h-[380px] top-1/3 -end-28" style="background:color-mix(in srgb,var(--acc) 22%, #c4b5fd); animation-delay:-6s"></div>
+</div>
+
+<div id="app" class="min-h-screen flex flex-col justify-between">
+  <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/70">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 shrink-0">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow" style="background:linear-gradient(135deg,var(--acc),#9333ea)">
+          <i data-lucide="languages" class="w-5 h-5"></i>
+        </div>
+        <span class="font-extrabold text-lg tracking-tight">Sirylang</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <select id="selLearn" onchange="changeLearnLang(this.value)" class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm font-bold text-slate-700 outline-none">
+          <option value="es">اسپانیایی (Español)</option>
+          <option value="fr">فرانسوی (Français)</option>
+          <option value="en">انگلیسی (English)</option>
+          <option value="de">آلمانی (Deutsch)</option>
+        </select>
+
+        <button onclick="openPractice()" class="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold text-white shadow transition hover:brightness-110" style="background:var(--acc)">
+          <i data-lucide="layers" class="w-4 h-4"></i><span>تمرین کارت‌ها</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full">
+    <div id="mainView">
+      <div class="flex flex-wrap items-end justify-between gap-5 mb-8 anim-up">
+        <div>
+          <p class="text-sm font-bold text-slate-400 mb-1">زبان در حال یادگیری</p>
+          <h1 id="heroName" class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-800">Español</h1>
+        </div>
+        <div class="w-full sm:w-64">
+          <div class="flex justify-between text-xs font-bold text-slate-400 mb-1.5">
+            <span>پیشرفت</span><span id="heroPct">0%</span>
+          </div>
+          <div class="h-2.5 rounded-full bg-slate-200 overflow-hidden">
+            <div id="heroBar" class="h-full rounded-full transition-all duration-500" style="width:0%; background:var(--acc)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative mb-6 anim-up">
+        <input id="searchInput" type="search" oninput="filterWords()" placeholder="جست‌وجوی واژه..." class="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-sm font-medium shadow-sm outline-none focus:border-[var(--acc)] transition">
+      </div>
+
+      <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-10"></div>
+    </div>
+
+    <!-- Practice View -->
+    <div id="practiceView" class="hidden max-w-md mx-auto py-10 text-center">
+      <div id="flashCard" onclick="this.classList.toggle('flipped')" class="flash h-64 w-full cursor-pointer mb-6">
+        <div class="flash-inner w-full h-full">
+          <div class="face bg-white rounded-3xl border border-slate-200 shadow-xl p-8 flex flex-col justify-center items-center h-full">
+            <span id="pCat" class="text-xs font-bold px-3 py-1 rounded-full bg-slate-100 text-slate-500 mb-4"></span>
+            <h2 id="pTerm" class="text-4xl font-extrabold text-slate-800"></h2>
+            <p id="pPron" class="text-sm text-slate-400 mt-2"></p>
+            <p class="text-xs text-slate-300 mt-6">برای دیدن ترجمه کلیک کنید</p>
+          </div>
+          <div class="face face-back bg-slate-900 text-white rounded-3xl shadow-xl p-8 flex flex-col justify-center items-center h-full">
+            <h2 id="pTr" class="text-3xl font-bold"></h2>
+            <p id="pEx" class="text-sm text-slate-400 mt-4 italic"></p>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center gap-4">
+        <button onclick="nextCard(false)" class="rounded-2xl border border-slate-200 bg-white px-6 py-3 font-bold text-slate-600 hover:bg-slate-50">هنوز بلد نیستم</button>
+        <button onclick="nextCard(true)" class="rounded-2xl px-6 py-3 font-bold text-white shadow" style="background:var(--acc)">بلدم!</button>
+      </div>
+      <button onclick="closePractice()" class="mt-6 text-sm font-bold text-slate-400 hover:text-slate-600">بازگشت به لیست واژه‌ها</button>
+    </div>
+  </main>
+
+  <footer class="border-t border-slate-200/70 bg-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-4 shadow-lg my-4 rounded-3xl text-white" style="background:linear-gradient(120deg,#229ED9,#4F6DF5)">
+      <div class="flex items-center gap-3">
+        <i data-lucide="send" class="w-6 h-6"></i>
+        <div>
+          <p class="font-extrabold">عضویت در کانال تلگرام برای اخبار سایت</p>
+          <p class="text-xs opacity-80" dir="ltr">@parla_site</p>
+        </div>
+      </div>
+      <a href="https://t.me/parla_site" target="_blank" class="rounded-full bg-white text-slate-900 px-4 py-2 font-bold text-sm hover:scale-105 transition">عضویت</a>
+    </div>
+  </footer>
+</div><script>
+"use strict";
+
+const DICT = {
+  es: [
+    { id: 1, cat: "سلام‌ها", term: "Hola", tr: "سلام", pron: "اُلا", ex: "¡Hola! ¿Cómo estás?" },
+    { id: 2, cat: "سلام‌ها", term: "Gracias", tr: "ممنون", pron: "گراسیاس", ex: "Muchas gracias." },
+    { id: 3, cat: "اعداد", term: "Uno", tr: "یک", pron: "اونو", ex: "Uno, dos, tres." },
+    { id: 4, cat: "سفر", term: "Aeropuerto", tr: "فرودگاه", pron: "آئروپوئرتو", ex: "¿Dónde está el aeropuerto?" }
+  ],
+  fr: [
+    { id: 1, cat: "سلام‌ها", term: "Bonjour", tr: "سلام / روز بخیر", pron: "بُنژور", ex: "Bonjour tout le monde!" },
+    { id: 2, cat: "سلام‌ها", term: "Merci", tr: "ممنون", pron: "مرسی", ex: "Merci beaucoup." },
+    { id: 3, cat: "غذا", term: "Pain", tr: "نان", pron: "پَن", ex: "Du pain, s'il vous plaît." }
+  ],
+  en: [
+    { id: 1, cat: "سلام‌ها", term: "Hello", tr: "سلام", pron: "هلو", ex: "Hello my friend!" },
+    { id: 2, cat: "غذا", term: "Water", tr: "آب", pron: "واتر", ex: "A glass of water." }
+  ],
+  de: [
+    { id: 1, cat: "سلام‌ها", term: "Hallo", tr: "سلام", pron: "هالو", ex: "Hallo, wie geht's?" },
+    { id: 2, cat: "تشکر", term: "Danke", tr: "ممنون", pron: "دانکه", ex: "Danke schön." }
+  ]
+};
+
+let currentLang = "es";
+let knownWords = JSON.parse(localStorage.getItem("sirylang_known") || "[]");
+let practiceIndex = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderGrid();
+  if (typeof lucide !== "undefined") lucide.createIcons();
+});
+
+function changeLearnLang(lang) {
+  currentLang = lang;
+  document.getElementById("heroName").innerText = lang === 'es' ? 'Español' : lang === 'fr' ? 'Français' : lang === 'de' ? 'Deutsch' : 'English';
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById("grid");
+  const words = DICT[currentLang] || [];
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  
+  const filtered = words.filter(w => w.term.toLowerCase().includes(search) || w.tr.includes(search));
+  
+  grid.innerHTML = filtered.map(w => {
+    const isKnown = knownWords.includes(`${currentLang}_${w.id}`);
+    return `
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm card-h flex flex-col justify-between">
+        <div>
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-500">${w.cat}</span>
+            <button onclick="toggleKnown('${w.id}')" class="text-slate-300 hover:text-amber-400 transition">
+              <i data-lucide="star" class="w-5 h-5 ${isKnown ? 'fill-amber-400 text-amber-400' : ''}"></i>
+            </button>
+          </div>
+          <h3 class="text-2xl font-bold text-slate-800 mb-1">${w.term}</h3>
+          <p class="text-sm font-medium text-slate-400 mb-3">${w.pron}</p>
+          <p class="text-base font-semibold text-slate-700 mb-2">${w.tr}</p>
+        </div>
+        <p class="text-xs text-slate-400 italic bg-slate-50 p-2.5 rounded-xl border border-slate-100">${w.ex}</p>
+      </div>
+    `;
+  }).join("");
+
+  updateProgress();
+  if (typeof lucide !== "undefined") lucide.createIcons();
+}
+
+function toggleKnown(id) {
+  const key = `${currentLang}_${id}`;
+  if (knownWords.includes(key)) {
+    knownWords = knownWords.filter(k => k !== key);
+  } else {
+    knownWords.push(key);
+  }
+  localStorage.setItem("sirylang_known", JSON.stringify(knownWords));
+  renderGrid();
+}
+
+function updateProgress() {
+  const words = DICT[currentLang] || [];
+  const knownCount = words.filter(w => knownWords.includes(`${currentLang}_${w.id}`)).length;
+  const pct = words.length ? Math.round((knownCount / words.length) * 100) : 0;
+  
+  document.getElementById("heroPct").innerText = `${pct}%`;
+  document.getElementById("heroBar").style.width = `${pct}%`;
+}
+
+function filterWords() {
+  renderGrid();
+}
+
+function openPractice() {
+  document.getElementById("mainView").classList.add("hidden");
+  document.getElementById("practiceView").classList.remove("hidden");
+  practiceIndex = 0;
+  showCard();
+}
+
+function closePractice() {
+  document.getElementById("practiceView").classList.add("hidden");
+  document.getElementById("mainView").classList.remove("hidden");
+  renderGrid();
+}
+
+function showCard() {
+  const words = DICT[currentLang] || [];
+  if (practiceIndex >= words.length) practiceIndex = 0;
+  
+  const card = words[practiceIndex];
+  document.getElementById("flashCard").classList.remove("flipped");
+  
+  document.getElementById("pCat").innerText = card.cat;
+  document.getElementById("pTerm").innerText = card.term;
+  document.getElementById("pPron").innerText = card.pron;
+  document.getElementById("pTr").innerText = card.tr;
+  document.getElementById("pEx").innerText = card.ex;
+}
+
+function nextCard(isKnown) {
+  const words = DICT[currentLang] || [];
+  if (isKnown) {
+    toggleKnown(words[practiceIndex].id);
+  }
+  practiceIndex++;
+  if (practiceIndex >= words.length) {
+    closePractice();
+  } else {
+    showCard();
+  }
+}
+</script>
+</body>
+</html>
