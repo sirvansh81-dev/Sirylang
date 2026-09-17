@@ -8,7 +8,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>Sirylang — Learn any language, one word at a time</title>
-<!-- v2.2 Sirylang -->
+<!-- v2.3 Sirylang mobile fixes -->
 <meta name="description" content="A clean, friendly language learning web app. Pick your native language, choose what to learn, hear real pronunciation, and practice with flashcards.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F97316' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 8 6 6'/%3E%3Cpath d='m4 14 6-6 2-3'/%3E%3Cpath d='M2 5h12'/%3E%3Cpath d='M7 2h1'/%3E%3Cpath d='m22 22-5-10-5 10'/%3E%3Cpath d='M14 18h6'/%3E%3C/svg%3E">
@@ -30,6 +30,23 @@
   select{ appearance:none; -webkit-appearance:none; }
   button{ cursor:pointer; }
   :focus-visible{ outline:2px solid var(--acc); outline-offset:2px; border-radius:12px; }
+
+  /* ---------- mobile fixes ---------- */
+  input, textarea, select{ font-size:16px !important; } /* iOS: stop auto-zoom on focus */
+  html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+  @media (max-width:640px){
+    html,body{ width:100%; max-width:100%; overflow-x:hidden; }
+    *,*::before,*::after{ box-sizing:border-box; }
+    img,video,iframe,canvas,svg{ max-width:100%; }
+    article[data-act="card"] h3{ font-size:24px !important; }
+    .flash-inner h2{ font-size:32px !important; }
+    #grid article{ min-width:0; }
+    .chip-scroll{ -webkit-overflow-scrolling:touch; }
+    video{ -webkit-playsinline:1; object-fit:contain; }
+    .flash-inner{ height:auto !important; min-height:280px !important; }
+    #flash .face{ position:relative !important; padding:18px !important; }
+    #flash .face-back{ position:absolute !important; inset:0 !important; }
+  }
 
   /* ---------- animations ---------- */
   @keyframes fadeUp{ from{opacity:0; transform:translateY(16px)} to{opacity:1; transform:none} }
@@ -60,6 +77,22 @@
   .card-h:hover{ transform:translateY(-4px); box-shadow:0 18px 40px -18px rgb(15 23 42/.22); border-color:color-mix(in srgb,var(--acc) 45%,white); }
   .chip-scroll{ scroll-snap-type:x proximity; } .chip-scroll>*{ scroll-snap-align:start; }
 </style>
+<style>
+/* SiryLang: mobile portrait overflow fix — layout/features unchanged */
+@media (max-width: 640px) and (orientation: portrait) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  img, video, iframe, canvas, svg {
+    max-width: 100%;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -78,7 +111,7 @@
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl text-white shadow-lg mb-4" style="background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,#9333ea)); box-shadow:0 14px 30px -10px color-mix(in srgb,var(--acc) 60%, transparent)">
           <i data-lucide="languages" class="w-8 h-8"></i>
         </div>
-        <h1 id="obTitle" class="text-3xl sm:text-4xl font-extrabold tracking-tight">Welcome to Sirylang</h1>
+        <h1 id="obTitle" class="text-2xl sm:text-4xl font-extrabold tracking-tight">Welcome to Sirylang</h1>
         <p id="obSub" class="mt-2 text-slate-500 max-w-md mx-auto">First, pick the language you feel most comfortable in — the whole app will adapt to you.</p>
       </div>
 
@@ -131,12 +164,12 @@
 <div id="app" class="hidden">
 
   <header class="sticky top-0 z-40 bg-white/85 backdrop-blur-xl border-b border-slate-200/70">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center gap-3">
+    <div class="max-w-6xl mx-auto px-2.5 sm:px-6 h-14 sm:h-16 flex items-center gap-1.5 sm:gap-3">
       <div class="flex items-center gap-2.5 shrink-0">
         <div class="w-9 h-9 rounded-xl flex items-center justify-center text-white shadow" style="background:linear-gradient(135deg,var(--acc),color-mix(in srgb,var(--acc) 60%,#9333ea))">
           <i data-lucide="languages" class="w-5 h-5"></i>
         </div>
-        <span class="font-extrabold text-lg tracking-tight">Sirylang</span>
+        <span class="font-extrabold text-lg tracking-tight hidden min-[420px]:inline">Sirylang</span>
       </div>
 
       <div class="flex-1"></div>
@@ -149,28 +182,28 @@
 
       <!-- target language select -->
       <div class="relative">
-        <select id="selLearn" data-actsel="set-learn" class="rounded-full border border-slate-200 bg-white ps-3.5 pe-8 py-2 text-sm font-bold text-slate-700 hover:border-slate-300 focus:border-[var(--acc)] transition" aria-label="Language you are learning"></select>
+        <select id="selLearn" data-actsel="set-learn" class="rounded-full border border-slate-200 bg-white ps-2.5 sm:ps-3.5 pe-7 sm:pe-8 py-2 text-[13px] sm:text-sm font-bold text-slate-700 hover:border-slate-300 focus:border-[var(--acc)] transition max-w-[96px] sm:max-w-none" aria-label="Language you are learning"></select>
         <i data-lucide="chevron-down" class="w-4 h-4 absolute end-2.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"></i>
       </div>
 
       <!-- quiz -->
-      <button data-act="quiz" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 sm:px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:border-slate-300 transition">
-        <i data-lucide="list-checks" class="w-4 h-4" style="color:var(--acc)"></i><span class="hidden sm:inline" data-i18n="quiz">Quiz</span>
+      <button data-act="quiz" class="w-10 h-10 sm:w-auto sm:px-4 shrink-0 inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white py-2 sm:py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:border-slate-300 transition" title="Quiz">
+        <i data-lucide="list-checks" class="w-4.5 h-4.5 w-[18px] h-[18px]" style="color:var(--acc)"></i><span class="hidden sm:inline" data-i18n="quiz">Quiz</span>
       </button>
 
       <!-- videos -->
-      <button data-act="videos" class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3.5 sm:px-4 py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:border-slate-300 transition">
-        <i data-lucide="clapperboard" class="w-4 h-4" style="color:var(--acc)"></i><span class="hidden sm:inline" data-i18n="videos">Videos</span>
+      <button data-act="videos" class="w-10 h-10 sm:w-auto sm:px-4 shrink-0 inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white py-2 text-sm font-bold text-slate-600 hover:text-slate-900 hover:border-slate-300 transition" title="Videos">
+        <i data-lucide="clapperboard" class="w-[18px] h-[18px]" style="color:var(--acc)"></i><span class="hidden sm:inline" data-i18n="videos">Videos</span>
       </button>
 
       <!-- practice -->
-      <button data-act="practice" class="inline-flex items-center gap-2 rounded-full px-3.5 sm:px-4 py-2 text-sm font-bold text-white shadow transition hover:brightness-110" style="background:var(--acc); box-shadow:0 8px 18px -8px color-mix(in srgb,var(--acc) 70%, transparent)">
-        <i data-lucide="layers" class="w-4 h-4"></i><span class="hidden sm:inline" data-i18n="practice">Practice</span>
+      <button data-act="practice" class="w-10 h-10 sm:w-auto sm:px-4 shrink-0 inline-flex items-center justify-center gap-2 rounded-full px-0 sm:px-4 py-2 text-sm font-bold text-white shadow transition hover:brightness-110" style="background:var(--acc); box-shadow:0 8px 18px -8px color-mix(in srgb,var(--acc) 70%, transparent)" title="Practice">
+        <i data-lucide="layers" class="w-[18px] h-[18px]"></i><span class="hidden sm:inline" data-i18n="practice">Practice</span>
       </button>
 
       <!-- ui language -->
-      <button data-act="open-ui" class="w-9 h-9 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:text-slate-900 hover:border-slate-300 transition" aria-label="Interface language">
-        <i data-lucide="globe" class="w-4.5 h-4.5 w-[18px] h-[18px]"></i>
+      <button data-act="open-ui" class="w-10 h-10 rounded-full border border-slate-200 bg-white flex items-center justify-center text-slate-500 hover:text-slate-900 hover:border-slate-300 transition shrink-0" aria-label="Interface language" title="Interface language">
+        <i data-lucide="globe" class="w-[18px] h-[18px]"></i>
       </button>
     </div>
   </header>
@@ -179,10 +212,10 @@
   <section class="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-2">
     <div class="flex flex-wrap items-end justify-between gap-5">
       <div class="anim-up">
-        <p class="text-sm font-bold text-slate-400 mb-1 flex items-center gap-2">
-          <i data-lucide="sparkle" class="w-4 h-4" style="color:var(--acc)"></i><span data-i18n="your_target">You're learning</span>
+        <p class="text-[13px] sm:text-sm font-bold text-slate-400 mb-1 flex items-center gap-2">
+          <i data-lucide="sparkle" class="w-3.5 h-3.5" style="color:var(--acc)"></i><span data-i18n="your_target">You're learning</span>
         </p>
-        <h1 id="heroName" class="text-4xl sm:text-5xl font-extrabold tracking-tight grad-text">Español</h1>
+        <h1 id="heroName" class="text-[32px] sm:text-5xl leading-tight font-extrabold tracking-tight grad-text break-words">Español</h1>
         <div class="mt-3 flex flex-wrap items-center gap-2">
           <span id="heroLevel" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold" style="background:color-mix(in srgb,var(--acc) 12%,white); color:var(--acc)"><i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i><span data-i18n="essentials">Essentials · A1</span></span>
           <span id="heroCount" class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold bg-slate-100 text-slate-500"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>36 words</span>
@@ -228,8 +261,8 @@
   <!-- owner sign-in modal (hidden route only) -->
   <div id="pinModal" class="hidden fixed inset-0 z-[75]">
     <div class="absolute inset-0 bg-slate-900/45 backdrop-blur-sm anim-in" data-act="pin-cancel"></div>
-    <div class="absolute inset-0 flex items-center justify-center p-5 pointer-events-none overflow-y-auto">
-      <div class="sheet pointer-events-auto bg-white w-full max-w-sm rounded-[1.75rem] border border-slate-200 shadow-2xl p-6 my-auto">
+    <div class="absolute inset-0 flex items-center justify-center p-3.5 sm:p-5 pointer-events-none overflow-y-auto">
+      <div class="sheet pointer-events-auto bg-white w-full max-w-sm rounded-[1.5rem] sm:rounded-[1.75rem] border border-slate-200 shadow-2xl p-5 sm:p-6 my-auto">
         <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-white mb-4 shadow-lg" style="background:var(--acc)"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
         <h3 class="text-xl font-extrabold" id="ownTitle">Owner sign-in</h3>
         <p class="text-sm text-slate-400 mt-1" id="ownSub">Only the site owner can upload videos.</p>
