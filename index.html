@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta name="google-site-verification" content="JxttOlGv_ViAUURfh7r8rsSffI3DoRD9PqD68NkkypE" />
+  <meta name="google-site-verification" content="7kxzDfgMIxXwo_ANJpQANiCAV5Q3mRy7DdMR3QEk1jk" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -35,9 +35,6 @@
   input, textarea, select{ font-size:16px !important; } /* iOS: stop auto-zoom on focus */
   html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
   @media (max-width:640px){
-    html,body{ width:100%; max-width:100%; overflow-x:hidden; }
-    *,*::before,*::after{ box-sizing:border-box; }
-    img,video,iframe,canvas,svg{ max-width:100%; }
     article[data-act="card"] h3{ font-size:24px !important; }
     .flash-inner h2{ font-size:32px !important; }
     #grid article{ min-width:0; }
@@ -76,22 +73,6 @@
   .card-h{ transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
   .card-h:hover{ transform:translateY(-4px); box-shadow:0 18px 40px -18px rgb(15 23 42/.22); border-color:color-mix(in srgb,var(--acc) 45%,white); }
   .chip-scroll{ scroll-snap-type:x proximity; } .chip-scroll>*{ scroll-snap-align:start; }
-</style>
-<style>
-/* SiryLang: mobile portrait overflow fix — layout/features unchanged */
-@media (max-width: 640px) and (orientation: portrait) {
-  html, body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-  img, video, iframe, canvas, svg {
-    max-width: 100%;
-  }
-}
 </style>
 </head>
 <body>
@@ -284,19 +265,20 @@
   </div>
 
   <footer class="border-t border-slate-200/70 bg-white/60">
-    <!-- telegram banner -->
+    <!-- social channels banner -->
     <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-6">
-      <div class="rounded-3xl p-5 sm:p-6 text-white flex flex-wrap items-center justify-between gap-4 shadow-lg" style="background:linear-gradient(120deg,#229ED9,#4F6DF5)">
-        <div class="flex items-center gap-3.5">
-          <span class="w-11 h-11 rounded-2xl bg-white/15 flex items-center justify-center shrink-0"><i data-lucide="send" class="w-5 h-5"></i></span>
-          <div>
-            <p class="font-extrabold leading-snug" data-i18n="tg_text">Join our Telegram channel for site news</p>
-            <p class="text-white/75 text-sm font-bold" dir="ltr">@parla_site</p>
-          </div>
+      <div class="rounded-3xl p-5 sm:p-7 text-white text-center shadow-lg" style="background:linear-gradient(120deg,color-mix(in srgb,var(--acc) 90%, #7c3aed),color-mix(in srgb,var(--acc) 60%, #7c3aed))">
+        <p class="text-lg sm:text-xl font-extrabold leading-snug max-w-xl mx-auto" data-i18n="tg_text">Join our Telegram or WhatsApp channel for Sirylang news</p>
+        <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <a href="https://t.me/Sirylang_site" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 rounded-full bg-[#229ED9] text-white px-6 py-3 font-extrabold text-sm sm:text-base hover:scale-105 transition shadow-lg">
+            <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><i data-lucide="send" class="w-4 h-4"></i></span>
+            <span data-i18n="tg_join">دنبال کردن در تلگرام</span>
+          </a>
+          <a href="https://chat.whatsapp.com/CyrNz8AZPzSL7DrkLX9qgh?s=cl&p=a&mlu=4&ilr=4" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 rounded-full bg-[#25D366] text-white px-6 py-3 font-extrabold text-sm sm:text-base hover:scale-105 transition shadow-lg">
+            <span class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center"><i data-lucide="message-circle" class="w-4 h-4"></i></span>
+            <span data-i18n="wa_join">دنبال کردن در واتساپ</span>
+          </a>
         </div>
-        <a href="https://t.me/parla_site" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full bg-white text-slate-900 px-5 py-2.5 font-extrabold text-sm hover:scale-105 transition shadow">
-          <i data-lucide="send" class="w-4 h-4"></i><span data-i18n="tg_btn">Join the channel</span>
-        </a>
       </div>
     </div>
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-400">
@@ -2352,6 +2334,19 @@ tr:{owner_key:"Sahip PIN’i",wrong_pin2:"Yanlış PIN — tekrar dene.",video_d
 pt:{owner_key:"PIN do dono",wrong_pin2:"PIN errado — tenta de novo.",video_desc:"Descrição do vídeo…",video_sum:"Resumo em texto do vídeo…",video_desc_lab:"Descrição",video_sum_lab:"Resumo",show_details:"Ver descrição e resumo",hide_details:"Ocultar detalhes",fullscreen:"Ecrã inteiro",edit:"Editar",video_updated:"Vídeo atualizado!",confirm_del:"Eliminar este vídeo?"}
 };
 Object.keys(UI_PATCH4).forEach(l=>Object.assign(UI[l]||={},UI_PATCH4[l]));
+
+/* social banner strings (updated Telegram + new WhatsApp) */
+const UI_PATCH6 = {
+en:{tg_text:"Join our Telegram or WhatsApp channel for Sirylang news",tg_join:"Follow on Telegram",wa_join:"Follow on WhatsApp"},
+fa:{tg_text:"جهت دریافت اخبار سایت در کانال تلگرام یا واتساپ ما عضو شوید",tg_join:"دنبال کردن در تلگرام",wa_join:"دنبال کردن در واتساپ"},
+es:{tg_text:"Únete a nuestro canal de Telegram o WhatsApp para novedades de Sirylang",tg_join:"Seguir en Telegram",wa_join:"Seguir en WhatsApp"},
+fr:{tg_text:"Rejoignez notre chaîne Telegram ou WhatsApp pour les nouvelles de Sirylang",tg_join:"Suivre sur Telegram",wa_join:"Suivre sur WhatsApp"},
+de:{tg_text:"Tritt unserem Telegram- oder WhatsApp-Kanal für Sirylang-Neuigkeiten bei",tg_join:"Auf Telegram folgen",wa_join:"Auf WhatsApp folgen"},
+ar:{tg_text:"انضم إلى قناتنا على تلغرام أو واتساب لمتابعة أخبار Sirylang",tg_join:"المتابعة على تلغرام",wa_join:"المتابعة على واتساب"},
+tr:{tg_text:"Sirylang haberleri için Telegram ya da WhatsApp kanalımıza katıl",tg_join:"Telegram’da takip et",wa_join:"WhatsApp’ta takip et"},
+pt:{tg_text:"Junta-te ao nosso canal do Telegram ou WhatsApp para novidades do Sirylang",tg_join:"Seguir no Telegram",wa_join:"Seguir no WhatsApp"}
+};
+Object.keys(UI_PATCH6).forEach(l=>Object.assign(UI[l]||={},UI_PATCH6[l]));
 
 const UI_PATCH5 = {
 en:{video_lang:"Video language (audience)",video_lang_hint:"Only learners studying this language will see the video.",all_learners:"All learners",ai_summary:"AI summary",ai_hint:"Play the video and let the AI listen, or load a subtitle file — then generate the summary automatically.",ai_local:"Built-in AI",ai_cloud:"Cloud AI",listen_video:"Listen & transcribe",stop_listen:"Stop listening",load_subs:"Load subtitles",make_summary:"Generate summary",analyzing:"Analyzing…",transcript_ph:"Transcript appears here (you can also paste text)…",sum_auto_ph:"The AI summary will appear here — you can still edit it.",summary_ready:"Summary ready!",need_more_text:"Need more speech or text first.",stt_unsupported:"Speech recognition isn’t supported in this browser.",subs_loaded:"Subtitles loaded",words_analyzed:"{n} words analyzed",hidden_note:"{n} video(s) are hidden from learners of other languages."},
